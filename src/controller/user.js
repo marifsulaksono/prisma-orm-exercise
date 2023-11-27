@@ -15,6 +15,22 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id)
+        const user = await prisma.user.findFirst({ where: { id } })
+        res.status(200).json({
+            data: user,
+            message: `Success get user ${id}`
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: "Get user by id error"
+        })
+    }
+}
+
 const insertNewUser = async (req, res) => {
     try {
         const body = { ...req.body }
@@ -60,6 +76,7 @@ const updateUser = async (req, res) => {
 
 module.exports = {
     getAllUsers,
+    getUserById,
     insertNewUser,
     updateUser
 }
